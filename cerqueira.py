@@ -85,7 +85,7 @@ class Edge:
         )
 
     def __repr__(self):
-        return f"{self.adjacent_vertices}" 
+        return f"{self.adjacent_vertices}"
 
 
 class Graph:
@@ -117,7 +117,9 @@ def next_vertices(
                     * adj_vertex.vertex_pheromones**GAMMA
                     * adj_vertex.bonus**DELTA
                 ) / adjacent_edge.cost**BETA
-    if total == 0: #This is important for the case where all the remaining edges are impossible (or incredibly inefficient). It will choose any of the remaining
+    if (
+        total == 0
+    ):  # This is important for the case where all the remaining edges are impossible (or incredibly inefficient). It will choose any of the remaining
         edg = random.choice(adjacent_edges)
         possible_edges.append(edg)
         for vert in edg.adjacent_vertices:
@@ -215,47 +217,6 @@ def create_graph_from_matrices(cost_matrix, bonus_matrix):
     return Graph(vertices_list=vertices)
 
 
-def draw_graph(graph: Graph):
-    G = nx.Graph()
-
-    # Adiciona vértices
-    for vertex in graph.vertices_list:
-        G.add_node(vertex.label, bonus=vertex.bonus)
-
-    # Adiciona arestas com pesos
-    for vertex in graph.vertices_list:
-        for edge in vertex.adjacent_edges:
-            v1, v2 = edge.adjacent_vertices
-            if G.has_edge(v1.label, v2.label):
-                continue  # Evita duplicar arestas
-            G.add_edge(v1.label, v2.label, cost=edge.cost)
-
-    # Posiciona os nós
-    pos = nx.spring_layout(G)
-
-    # Desenha os nós
-    nx.draw(
-        G, pos, with_labels=True, node_color="lightblue", node_size=500, font_size=10
-    )
-
-    # Adiciona rótulos com os bônus dos vértices
-    node_labels = {
-        vertex.label: f"{vertex.label} (B: {vertex.bonus})"
-        for vertex in graph.vertices_list
-    }
-    nx.draw_networkx_labels(G, pos, labels=node_labels)
-
-    # Adiciona rótulos com os custos das arestas
-    edge_labels = {
-        (v1, v2): f"{data['cost']:.1f}" for v1, v2, data in G.edges(data=True)
-    }
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
-
-    # Exibe o gráfico
-    plt.title("Graph Representation")
-    plt.show()
-
-
 def main():
     cost_matrix = [
         [0, 3, 10, 4, 12, 8, 5, 7, 15, 3],
@@ -271,18 +232,174 @@ def main():
     ]
 
     cost_matrix2 = [
-        [0, 9.1,  float("inf"),  float("inf"),  float("inf"),  float("inf"),  float("inf"),  float("inf"), 15.4, 9.7,  float("inf"),  float("inf")],
-        [9.1,0,6.8, float("inf"), float("inf"), float("inf"), float("inf"), float("inf"), float("inf"), float("inf"), float("inf"), float("inf")],
-        [ float("inf"), 6.8, 0, 6.1, 8.2,  float("inf"), 27, 18.7,  float("inf"),  float("inf"),  float("inf"),  float("inf")],
-        [ float("inf"),  float("inf"), 6.1, 0, 3.7, 9.5,  float("inf"),  float("inf"),  float("inf"),  float("inf"),  float("inf"),  float("inf")],
-        [ float("inf"),  float("inf"), 8.2, 3.7, 0, 10.4,  float("inf"),  float("inf"),  float("inf"),  float("inf"),  float("inf"),  float("inf")],
-        [ float("inf"),  float("inf"),   float("inf"), 9.5, 10.4, 0, 28.2,  float("inf"),  float("inf"),  float("inf"),  float("inf"),  float("inf")],
-        [ float("inf"),  float("inf"), 27,  float("inf"),  float("inf"), 28.1, 0, 14.5,  float("inf"),  float("inf"),  float("inf"), 14.4],
-        [ float("inf"),  float("inf"), 18.7,  float("inf"),  float("inf"),  float("inf"), 14.5, 0, 6.4,  float("inf"), 8.4, 7.3],
-        [15.4,  float("inf"),  float("inf"),  float("inf"),  float("inf"),  float("inf"),  float("inf"), 6.4, 0, 7, 10.8,  float("inf")],
-        [9.7,  float("inf"),  float("inf"),  float("inf"),  float("inf"),  float("inf"),  float("inf"),  float("inf"), 7, 0,  float("inf"), 8.1],
-        [ float("inf"),  float("inf"),  float("inf"),  float("inf"),  float("inf"),  float("inf"),  float("inf"), 8.4, 10.8,  float("inf"), 0, 6.3],
-        [ float("inf"),  float("inf"),  float("inf"),  float("inf"),  float("inf"),  float("inf"), 14.4, 7.3,  float("inf"), 8.1, 6.3, 0]
+        [
+            0,
+            9.1,
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            15.4,
+            9.7,
+            float("inf"),
+            float("inf"),
+        ],
+        [
+            9.1,
+            0,
+            6.8,
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+        ],
+        [
+            float("inf"),
+            6.8,
+            0,
+            6.1,
+            8.2,
+            float("inf"),
+            27,
+            18.7,
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+        ],
+        [
+            float("inf"),
+            float("inf"),
+            6.1,
+            0,
+            3.7,
+            9.5,
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+        ],
+        [
+            float("inf"),
+            float("inf"),
+            8.2,
+            3.7,
+            0,
+            10.4,
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+        ],
+        [
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            9.5,
+            10.4,
+            0,
+            28.2,
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+        ],
+        [
+            float("inf"),
+            float("inf"),
+            27,
+            float("inf"),
+            float("inf"),
+            28.1,
+            0,
+            14.5,
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            14.4,
+        ],
+        [
+            float("inf"),
+            float("inf"),
+            18.7,
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            14.5,
+            0,
+            6.4,
+            float("inf"),
+            8.4,
+            7.3,
+        ],
+        [
+            15.4,
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            6.4,
+            0,
+            7,
+            10.8,
+            float("inf"),
+        ],
+        [
+            9.7,
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            7,
+            0,
+            float("inf"),
+            8.1,
+        ],
+        [
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            8.4,
+            10.8,
+            float("inf"),
+            0,
+            6.3,
+        ],
+        [
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            float("inf"),
+            14.4,
+            7.3,
+            float("inf"),
+            8.1,
+            6.3,
+            0,
+        ],
     ]
     bonus_matrix = [11, 46, 45, 67, 86, 37, 31, 53, 89, 40]
     bonus_matrix2 = [0, 29, 5, 22, 150, 51, 27, 19, 119, 35, 138, 147]
@@ -297,12 +414,8 @@ def main():
         "\nFinal bonus:",
         final_bonus,
         "\nFinal profit:",
-        final_bonus - final_distance
+        final_bonus - final_distance,
     )
-    # for i, vertex in enumerate(graph.vertices_list):
-    #    print(f"Vertex {vertex.label}: pheromones = {vertex.vertex_pheromones}")
-
-    # draw_graph(graph)
 
 
 if __name__ == "__main__":
