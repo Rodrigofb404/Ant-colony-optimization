@@ -135,7 +135,6 @@ class Vertice:
 bonus = [0, 29, 5, 22, 150, 51, 27, 19, 119, 35, 147, 138, 2, 4]
 vertices = [Vertice(b, i) for i, b in enumerate(bonus)]
 
-# Matriz de adjacência
 matriz_adjacencia = [
     [float('inf'), 9.1, float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), 15.4, 9.7, float('inf'), float('inf'), float('inf'), float('inf')],
     [9.1, 0, 6.8, float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf')],
