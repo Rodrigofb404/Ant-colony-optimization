@@ -64,6 +64,9 @@ class Grafo:
                             possibilidadesDeEscolha.append((vizinho, atratividade))
 
             if not possibilidadesDeEscolha:
+                aresta = self.espelhar(self.vertices[0], verticeAtual)
+                if aresta:
+                    custoTotal += aresta.custo
                 break
 
             somaProbabilidades = sum(prob for _, prob in possibilidadesDeEscolha)
@@ -88,6 +91,7 @@ class Grafo:
         for caminho, premio, custo in caminhos:
             for i in range(len(caminho) - 1):
                 aresta = self.espelhar(caminho[i], caminho[i + 1])
+              
                 if aresta:
                     feromoniosArestas[aresta] += Q / (custo )
             for vertice in caminho:
@@ -105,17 +109,11 @@ class Grafo:
             for _ in range(numFormigas):
                 caminho, premio, custo = self.construcaoDaSolucao(feromoniosArestas, feromoniosVertices, alpha, beta, custoLimite)
                 caminhos.append((caminho, premio, custo))
-                # if premio > melhorPremio:
-                  #  melhorPremio = premio
-                  #  melhorCaminho = caminho
-                  # melhorCusto = custo
-                valor = premio/custo
-                valorAntigo = melhorPremio/melhorCusto
-                print(valor, valorAntigo)
-                if valor > valorAntigo:
-                    melhorCaminho = caminho
-                    melhorPremio = premio
-                    melhorCusto = custo
+                if premio > melhorPremio:
+                     melhorPremio = premio
+                     melhorCaminho = caminho
+                     melhorCusto = custo
+                
                 
 
             self.renovaFeromonios(feromoniosArestas, feromoniosVertices, Q, sigma, caminhos)
@@ -134,35 +132,42 @@ class Vertice:
 
     def __repr__(self):
         return f"V({self.index})"
+bonus = [0, 29, 5, 22, 150, 51, 27, 19, 119, 35, 147, 138, 2, 4]
+vertices = [Vertice(b, i) for i, b in enumerate(bonus)]
 
-vertices = [Vertice(bonus=i+1 if i==1 else i, index=i) for i in range(10)]
+# Matriz de adjacência
+matriz_adjacencia = [
+    [float('inf'), 9.1, float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), 15.4, 9.7, float('inf'), float('inf'), float('inf'), float('inf')],
+    [9.1, 0, 6.8, float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf')],
+    [float('inf'), 6.8, 0, 6.1, 8.2, float('inf'), 27, 18.7, float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf')],
+    [float('inf'), float('inf'), 6.1, 0, 3.7, 9.5, float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), 2.7, 1.7],
+    [float('inf'), float('inf'), 8.2, 3.7, 0, 10.4, float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), 1.8, 2.3],
+    [float('inf'), float('inf'), float('inf'), 9.5, 10.4, 0, 28.2, float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), 10, 8.7],
+    [float('inf'), float('inf'), 27, float('inf'), float('inf'), 28.1, 0, 14.5, float('inf'), float('inf'), float('inf'), 14.4, 33.2, float('inf')],
+    [float('inf'), float('inf'), 18.7, float('inf'), float('inf'), float('inf'), 14.5, 0, 6.4, float('inf'), 8.4, 7.3, float('inf'), float('inf')],
+    [15.4, float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), 6.4, 0, 7, 10.8, float('inf'), float('inf'), float('inf')],
+    [9.7, float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), 7, 0, float('inf'), 8.1, float('inf'), float('inf')], 
+    [float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), 8.4, 10.8, float('inf'), 0, 6.3, float('inf'), float('inf')],
+    [float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), 14.4, 7.3, float('inf'), 8.1, 6.3, 0, float('inf'), float('inf')],
+    [float('inf'), float('inf'), float('inf'), 2.7, 1.8, 10, 33.2, float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), 0, 2.6],
+    [float('inf'), float('inf'), float('inf'), 1.7, 2.3, 8.7, float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), 2.6, 0]
+]
 
-arestas = [Aresta(v1=vertices[i], v2=vertices[i+1], custo=i+1) for i in range(9)] 
+arestas = []
+for i in range(len(matriz_adjacencia)):
+    for j in range(i + 1, len(matriz_adjacencia[i])):
+        if matriz_adjacencia[i][j] != float('inf'):
+            arestas.append(Aresta(vertices[i], vertices[j], matriz_adjacencia[i][j]))
 
-arestas.append(Aresta(vertices[0], vertices[2], 4))  # Aresta entre V0 e V2
-arestas.append(Aresta(vertices[1], vertices[2], 3))  # Aresta entre V0 e V2
-arestas.append(Aresta(vertices[0], vertices[1], 4))  # Aresta entre V0 e V2
-arestas.append(Aresta(vertices[9], vertices[6], 6))  # Aresta entre V0 e V2
-arestas.append(Aresta(vertices[9], vertices[7], 6))  # Aresta entre V0 e V2
-
-
-arestas.append(Aresta(vertices[8], vertices[4], 8))  # Aresta entre V0 e V2
+grafo = Grafo(vertices, arestas, custos=None, bonus=bonus)
 
 
-
-
-for aresta in arestas:
-    print(f"Aresta entre V{aresta.vertices[0].index} e V{aresta.vertices[1].index}")
-for bonus in vertices:
-    print(bonus.bonus)
-grafo = Grafo(vertices, arestas, custos=None, bonus=None)
-
-melhorCaminho, melhorPremio, melhorCusto= grafo.aco(
-    numFormigas=1,
-    numIteracoes=1,
-    alpha=2,
-    beta=2,
-    custoLimite=2000,
+melhorCaminho, melhorPremio, melhorCusto = grafo.aco(
+    numFormigas=10,
+    numIteracoes=20,
+    alpha=1,
+    beta=1,
+    custoLimite=5000,
     Q=10,
     sigma=0.1,
     feromonioInicial=1,
