@@ -6,7 +6,7 @@ import numpy as np
 # Testa todas as combinações de parâmetro variando de 0.3 em 0.3 
 def teste(graph, alpha, beta, gamma, delta):
     i = 0
-    with open("<INSERIR NOME DO ARQUIVO PARA ESCRITA", "w") as file:
+    with open("<NOME DO ARQUIVO", "w") as file:
         for alpha in np.arange(0.3, 1, 0.3):
             ALPHA = alpha
             for beta in np.arange(0.3, 1, 0.3):
@@ -34,10 +34,10 @@ def teste(graph, alpha, beta, gamma, delta):
 def main():
     
     # Matriz de pesos (Arestas)
-    matrix = "<INSERIR MATRIZ DE PESOS DO GRAFO>"
+    matrix = "<MATRIZ DE PESOS>"
 
     # Lista de bônus (Vértices)
-    bonus = "<INSERIR LISTA DE BÔNUS DO GRAFO" # a lista de bônus precisa ter a mesma quantidade de colunas da matriz de pesos
+    bonus = "<LISTA DE BÔNUS" # a lista de bônus precisa ter a mesma quantidade de colunas da matriz de pesos
        
     global ALPHA, BETA, GAMMA, DELTA
     
