@@ -33,7 +33,7 @@ def teste(graph, alpha, beta, gamma, delta):
 
 
 def main():
-    # Definindo a matriz fornecida
+    # Matriz de pesos (Arestas)
     matrix = [
     [0, 9.1, float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), 14.5, 9.7, float('inf'), float('inf'), float('inf'), float('inf')],
     [9.1, 0, 6.8, float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf')],
@@ -51,12 +51,15 @@ def main():
     [float('inf'), float('inf'), float('inf'), 1.7, 2.3, 8.7, float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), 2.6, 0]
 ]
 
+    # Lista de bônus (Vértices)
     bonus = [0, 29, 5, 22, 150, 51, 27, 19, 119, 35, 147, 138, 2, 4] 
        
     global ALPHA, BETA, GAMMA, DELTA
     
+    # Cria o grafo
     graph = create_graph_from_matrices(matrix, bonus)
     
+    # Executa os testes
     teste(graph, ALPHA, BETA, GAMMA, DELTA)
 
 if __name__ == "__main__":
