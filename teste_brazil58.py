@@ -22,7 +22,6 @@ def teste(graph, alpha, beta, gamma, delta):
 
                         execution_time = end_time - start_time
                         
-                        
                         file.write("=================================================================\n")
                         file.write(f"Alpha: {ALPHA}, Beta: {BETA}, Gamma: {GAMMA}, Delta: {DELTA}\n")
                         file.write(f"Tempo de execucao: {execution_time:.4f} segundos\n")

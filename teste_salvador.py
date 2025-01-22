@@ -17,19 +17,18 @@ def teste(graph, alpha, beta, gamma, delta):
                         i += 1
                         DELTA = delta
                         start_time = time.time()
-                        final_path, final_distance, final_bonus = ant_colony(graph)  # Supondo que você tenha a função ant_colony definida
+                        final_path, final_distance, final_bonus = ant_colony(graph)  
                         end_time = time.time()
 
                         execution_time = end_time - start_time
                         
-                        # Escreve os resultados no arquivo e força a atualização imediata
                         file.write("=================================================================\n")
                         file.write(f"Alpha: {ALPHA}, Beta: {BETA}, Gamma: {GAMMA}, Delta: {DELTA}\n")
                         file.write(f"Tempo de execucao: {execution_time:.4f} segundos\n")
                         file.write(f"Final Path: {final_path}\nTotal Distance: {final_distance}\nTotal Bonus: {final_bonus}\nFinal profit: {final_bonus - final_distance}\n")
                         file.write(f"Iteracao: {i}\n\n")
                         file.write("==================================================================\n")
-                        file.flush()  # Força a escrita no disco imediatamente
+                        file.flush()  
 
 
 def main():
